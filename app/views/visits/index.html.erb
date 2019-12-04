@@ -1,24 +1,10 @@
-      <ul>
-    <li>
-      <a href="/user_sign_out">
-        Sign Out
-      </a>
-    </li>
-    <li>
-      <a href="/edit_user">
-        Edit Profile
-      </a>
-    </li>
-    <li>
-      <a href="/">
-        Profile
-      </a>
-    </li>
-
-  </ul>
-
-<h1><%= @current_user.username.capitalize %>'s Account</h1>
-
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      List of all visits
+    </h1>
+  </div>
+</div>
 
 <hr>
 
@@ -33,20 +19,27 @@
         <label for="purpose_box">
           Purpose
         </label>
+
         <select name="purpose_from_query" id="purpose_box" class="form-control form-control-sm mr-sm-1" value="Choose a purpose...">
-        <option value="1">DO NOT BOTHER ME!!</option>
-        <option value="2">Studying Alone and Only Studying</option>
-        <option value="3">Studying, but Down to Study Together</option>
-        <option value="4">Kinda Studying but down to Procrastinate</option>
-        <option value="5">I WANT TO HANG OUT</option></select>
+        <option value="DO NOT BOTHER ME!!">Studying Alone and Only Studying</option>
+        <option value="Studying, but Down to Study Together">Studying, but Down to Study Together</option>
+        <option value="Kinda Studying but down to Procrastinate">Kinda Studying but down to Procrastinate</option>
+        <option value="Down to hang out">I am having fun!</option></select>
+      </div>
+
+      <div class="form-group">
+        <label for="visitors_id_box">
+          Visitors
+        </label>
+
+        <input type="text" id="visitors_id_box" name="visitors_id_from_query" class="form-control" placeholder="<%= @visit.visitors_id %>">
       </div>
 
       <div class="form-group">
         <label for="location_id_box">
           Location
         </label>
-      <select name="purpose_from_query" id="purpose_box" class="form-control form-control-sm mr-sm-1" value="Choose a purpose...">
-        
+
         <input type="text" id="location_id_box" name="location_id_from_query" class="form-control">
       </div>
 
@@ -60,18 +53,18 @@
 <hr>
 <div class="row mb-3">
   <div class="col-md-12">
-    <h2>
-      Past Check Ins
-    </h2>
-  </div>
-</div>
-<div class="row mb-3">
-  <div class="col-md-12">
     <table class="table">
       <tr>
+        <th>
+          ID
+        </th>
 
         <th>
           Purpose
+        </th>
+
+        <th>
+          Visitors
         </th>
 
         <th>
@@ -79,26 +72,33 @@
         </th>
 
         <th>
-          Check In
+          Created at
         </th>
 
         <th>
-          Check Out
+          Updated at
         </th>
 
         <th>
         </th>
       </tr>
 
-      <% Visit.where({:visitors_id => @current_user.id }).each do |visit| %>
+      <% @visits.each do |visit| %>
       <tr>
+        <td>
+          <%= visit.id %>
+        </td>
+
         <td>
           <%= visit.purpose %>
         </td>
 
         <td>
-          <% place_number = visit.location_id %>
-          <%= Location.where({:id => place_number}).pluck(:name).at(0) %>
+          <%= visit.visitors_id %>
+        </td>
+
+        <td>
+          <%= visit.location_id %>
         </td>
 
         <td>
@@ -120,5 +120,3 @@
 </div>
 
 <hr>
-
-

@@ -6,17 +6,17 @@ class UserSessionsController < ApplicationController
   end
 
   def add_cookie
-    user = User.where({ :email => params.fetch("email_from_query") }).at(0)
+    @user = User.where({ :email => params.fetch("email_from_query") }).at(0)
     
     the_supplied_password = params.fetch("password_from_query")
     
-    if user != nil
-      are_they_legit = user.authenticate(the_supplied_password)
+    if @user != nil
+      are_they_legit = @user.authenticate(the_supplied_password)
     
       if are_they_legit == false
         redirect_to("/user_sign_in", { :alert => "Password incorrect." })
       else
-        session.store(:user_id, user.id)
+        session.store(:user_id, @user.id)
       
         redirect_to("/", { :notice => "Signed in successfully." })
       end

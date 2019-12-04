@@ -1,5 +1,24 @@
 Rails.application.routes.draw do
 
+  # Routes for the Visit resource:
+
+  # CREATE
+  match("/insert_visit", { :controller => "visits", :action => "create", :via => "post"})
+          
+  # READ
+  match("/visits", { :controller => "visits", :action => "index", :via => "get"})
+  
+  match("/visits/:id_from_path", { :controller => "visits", :action => "show", :via => "get"})
+  
+  # UPDATE
+  
+  match("/modify_visit/:id_from_path", { :controller => "visits", :action => "update", :via => "post"})
+  
+  # DELETE
+  match("/delete_visit/:id_from_path", { :controller => "visits", :action => "destroy", :via => "get"})
+
+  #------------------------------
+
   match("/", {:controller => "users", :action => "index", :via => "get"})
 
   # Routes for signing up
