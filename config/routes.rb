@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   
   match("/modify_visit/:id_from_path", { :controller => "visits", :action => "update", :via => "post"})
   
+  # CHECK OUT
+
+  match("/check_out_visit", {:controller => "visits", :action => "check_out", :via => "post"})
+
   # DELETE
   match("/delete_visit/:id_from_path", { :controller => "visits", :action => "destroy", :via => "get"})
 

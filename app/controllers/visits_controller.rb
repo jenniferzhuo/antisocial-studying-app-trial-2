@@ -44,6 +44,20 @@ class VisitsController < ApplicationController
     end
   end
 
+  def check_out
+    the_id = params.fetch("id_from_path")
+    @visit = Visit.where({ :id => the_id }).at(0)
+
+    @visit.check_out = true
+
+    if @visit.valid?
+      @visit.save
+      redirect_to("/visits", { :notice => "Visit updated successfully."} )
+    else
+      redirect_to("/visits", { :alert => "Visit failed to update successfully." })
+    end
+  end
+
   def destroy
     the_id = params.fetch("id_from_path")
     @visit = Visit.where({ :id => the_id }).at(0)
