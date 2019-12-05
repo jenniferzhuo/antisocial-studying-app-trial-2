@@ -15,7 +15,7 @@ class VisitsController < ApplicationController
   def create
     @visit = Visit.new
     @visit.purpose = params.fetch("purpose_from_query", nil)
-    @visit.visitors_id = @current_user.id 
+    @visit.visitors_id = session[:user_id]
     @visit.location_id = params.fetch("location_id_from_query")
 
     if @visit.valid?

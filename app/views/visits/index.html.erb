@@ -24,23 +24,22 @@
         <option value="DO NOT BOTHER ME!!">Studying Alone and Only Studying</option>
         <option value="Studying, but Down to Study Together">Studying, but Down to Study Together</option>
         <option value="Kinda Studying but down to Procrastinate">Kinda Studying but down to Procrastinate</option>
-        <option value="Down to hang out">I am having fun!</option></select>
+        <option value="I need friends. Come hang out with me!">I need friends. Come hang out with me!</option></select>
       </div>
 
       <div class="form-group">
-        <label for="visitors_id_box">
-          Visitors
-        </label>
-
-        <input type="text" id="visitors_id_box" name="visitors_id_from_query" class="form-control" placeholder="<%= @visit.visitors_id %>">
+        <input type="hidden" id="visitors_id_box" name="visitors_id_from_query" class="form-control" placeholder="<%= session[:user_id] %>">
       </div>
 
       <div class="form-group">
         <label for="location_id_box">
           Location
         </label>
-
-        <input type="text" id="location_id_box" name="location_id_from_query" class="form-control">
+        <select name="location_id_from_query" id="location_id_box" class="form-control form-control-sm mr-sm-1" value="Choose a purpose...">
+        <% Location.all.order({:name => :asc}).each do |locations| %>
+        <option value="<%= locations.name %>"><%= locations.name %></option>
+        <% end %>
+        </select>
       </div>
 
       <button class="btn btn-block btn-outline-secondary">
@@ -72,11 +71,11 @@
         </th>
 
         <th>
-          Created at
+          Checked In
         </th>
 
         <th>
-          Updated at
+          Checked Out
         </th>
 
         <th>
@@ -94,11 +93,11 @@
         </td>
 
         <td>
-          <%= visit.visitors_id %>
+          <%= User.where({:id => visit.visitors_id}).pluck(:username).at(0) %>
         </td>
 
         <td>
-          <%= visit.location_id %>
+          <%= Location.where({:id => visit.location_id}).pluck(:name).at(0) %>
         </td>
 
         <td>
