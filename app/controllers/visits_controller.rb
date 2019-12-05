@@ -17,6 +17,7 @@ class VisitsController < ApplicationController
     @visit.purpose = params.fetch("purpose_from_query", nil)
     @visit.visitors_id = session[:user_id]
     @visit.location_id = params.fetch("location_id_from_query")
+    @visit.check_out = false
 
     if @visit.valid?
       @visit.save
@@ -31,8 +32,9 @@ class VisitsController < ApplicationController
     @visit = Visit.where({ :id => the_id }).at(0)
 
     @visit.purpose = params.fetch("purpose_from_query")
-    @visit.visitors_id = params.fetch("visitors_id_from_query")
+    @visit.visitors_id = session[:user_id]
     @visit.location_id = params.fetch("location_id_from_query")
+    @visit.check_out = false
 
     if @visit.valid?
       @visit.save

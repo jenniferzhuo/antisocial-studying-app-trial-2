@@ -4,6 +4,7 @@ class CreateVisits < ActiveRecord::Migration[6.0]
       t.string :purpose
       t.integer :visitors_id
       t.integer :location_id
+      t.boolean :check_out, {:default => false}
 
       t.timestamps
     end
