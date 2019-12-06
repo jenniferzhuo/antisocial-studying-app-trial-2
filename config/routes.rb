@@ -23,7 +23,9 @@ Rails.application.routes.draw do
 
   #------------------------------
 
-  match("/user", {:controller => "users", :action => "index", :via => "get"})
+  match("/user", {:controller => "users", :action => "individual_account", :via => "get"})
+  match("/close_friends", {:controller => "users", :action => "close_friend_locations", :via => "get"})
+  match("/all_users", {:controller => "users", :action => "index", :via => "get"})
 
   # Routes for signing up
 

@@ -69,10 +69,54 @@
 </div>
 <%end %>
 
+<hr>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h2>
+      Busiest locations
+    </h2>
+    
+
+      <table class="table">
+      <% Visit.where({:check_out => false}).each do |visit| %>
+      <tr>
+
+        <td>
+          <%= visit.purpose %>
+        </td>
+
+        <td>
+          <%= Location.where({:id => visit.location_id}).pluck(:name).at(0) %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(visit.created_at) %> ago
+        </td>
+        <td>
+          <% if visit.check_out == false %>
+            I'm still here.
+          <% else %>
+            I'm no longer here.
+          <% end %>
+        </td>
+
+        <td>
+          <a href="/visits/<%= visit.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
 
 <hr>
 <div class="row mb-3">
   <div class="col-md-12">
+    <h2>
+      Current User Checkins
+    </h2>
     <table class="table">
       <tr>
 
@@ -100,7 +144,7 @@
         </th>
       </tr>
 
-      <% @visits.each do |visit| %>
+      <% @visits.where({:check_out => false}).each do |visit| %>
       <tr>
 
         <td>

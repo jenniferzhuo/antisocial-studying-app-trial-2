@@ -1,6 +1,21 @@
 class UsersController < ApplicationController
   skip_before_action(:force_user_sign_in, { :only => [:new_registration_form, :create] })
   
+  def individual_account
+    @users = User.all.order({ :username => :asc })
+
+    respond_to do |format|
+      format.json do
+        render({ :json => @users.as_json })
+      end
+
+      format.html do
+        render({ :template => "users/show.html.erb" })
+      end
+    end
+    
+  end
+
   def index
     @users = User.all.order({ :username => :asc })
 
