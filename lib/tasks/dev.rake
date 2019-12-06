@@ -2,7 +2,7 @@ namespace(:dev) do
   desc "Hydrate the database with some dummy data to look at so that developing is easier"
   task({ :prime => :environment}) do
 
-  Location.destroy_all
+  ## Location.destroy_all
 
   l = Location.new
   l.name = "Teamo"

@@ -21,7 +21,7 @@
 <div class="row mb-3">
   <div class="col-md-12">
     <h2>
-      Currently Checked In at <%= Visit.where({:visitors_id => session[:user_id] , :check_out => false}).at(0) %>
+      Currently Checked In at <% current_visit_location = Visit.where({:visitors_id => session[:user_id] , :check_out => false}).pluck(:location_id).at(0) %><%= Location.where({:id => current_visit_location}).pluck(:name).at(0) %>
     </h2>
   </div>
 </div>
@@ -75,7 +75,7 @@
 <div class="row mb-3">
   <div class="col-md-12">
     <h2>
-      Past Check Ins
+      <%= User.where({:id => session[:user_id]}).pluck(:username).at(0).capitalize %>'s Past Check Ins
     </h2>
   </div>
 </div>
@@ -104,7 +104,7 @@
         </th>
       </tr>
 
-      <% Visit.where({:visitors_id => @current_user.id }).each do |visit| %>
+      <% Visit.where({:visitors_id => @current_user.id, :check_out => true }).each do |visit| %>
       <tr>
         <td>
           <%= visit.purpose %>
