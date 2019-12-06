@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   match("/insert_visit", { :controller => "visits", :action => "create", :via => "post"})
           
   # READ
-  match("/visits", { :controller => "visits", :action => "index", :via => "get"})
+  match("/", { :controller => "visits", :action => "index", :via => "get"})
   
   match("/visits/:id_from_path", { :controller => "visits", :action => "show", :via => "get"})
   
@@ -16,14 +16,14 @@ Rails.application.routes.draw do
   
   # CHECK OUT
 
-  match("/check_out_visit", {:controller => "visits", :action => "check_out", :via => "post"})
+  match("/check_out_visit", {:controller => "visits", :action => "check_out", :via => "get"})
 
   # DELETE
   match("/delete_visit/:id_from_path", { :controller => "visits", :action => "destroy", :via => "get"})
 
   #------------------------------
 
-  match("/", {:controller => "users", :action => "index", :via => "get"})
+  match("/user", {:controller => "users", :action => "index", :via => "get"})
 
   # Routes for signing up
 

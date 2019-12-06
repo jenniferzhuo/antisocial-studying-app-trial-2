@@ -6,16 +6,17 @@
 
     <div class="row mb-3">
       <div class="col">
-        <a href="/visits" class="btn btn-block btn-outline-secondary">
+        <a href="/" class="btn btn-block btn-outline-secondary">
           Go back
         </a>
       </div>
-
+      <% if Visit.where({:id => @visit.id}).pluck(:visitors_id).at(0) == session[:user_id] %>
       <div class="col">
         <a href="/delete_visit/<%= @visit.id %>" class="btn btn-block btn-outline-secondary">
           Delete visit
         </a>
       </div>
+      <% end %>
     </div>
 
     <dl>
@@ -63,7 +64,7 @@
 
 <hr>
 
-
+<% if Visit.where({:id => @visit.id}).pluck(:visitors_id).at(0) == session[:user_id] &&  %>
 <div class="row mb-3">
   <div class="col-md-8 offset-md-2">
     <h2>
@@ -89,7 +90,7 @@
           Location
         </label>
 
-        <input type="text" id="location_id_box" name="location_id_from_query" class="form-control" value="<%= @visit.location_id %>" placeholder="<%= Location.where({:id => @visit.location_id}).pluck(:name) %>">
+        <input type="text" id="location_id_box" name="location_id_from_query" class="form-control" value="<%= Location.where({:id => @visit.location_id}).pluck(:name).at(0) %>" placeholder="<%= Location.where({:id => @visit.location_id}).pluck(:name) %>">
       </div>
 
       <button class="btn btn-block btn-outline-secondary">
@@ -98,5 +99,5 @@
     </form>
   </div>
 </div>
-
+<% end %>
 <hr>

@@ -21,9 +21,9 @@ class VisitsController < ApplicationController
 
     if @visit.valid?
       @visit.save
-      redirect_to("/visits", { :notice => "Visit created successfully." })
+      redirect_to("/", { :notice => "Visit created successfully." })
     else
-      redirect_to("/visits", { :notice => "Visit failed to create successfully." })
+      redirect_to("/", { :notice => "Visit failed to create successfully." })
     end
   end
 
@@ -45,16 +45,17 @@ class VisitsController < ApplicationController
   end
 
   def check_out
-    the_id = params.fetch("id_from_path")
+    @current_visit = Visit.where({:visitors_id => session[:user_id] , :check_out => false}).at(0)
+    the_id = @current_visit.id
     @visit = Visit.where({ :id => the_id }).at(0)
 
     @visit.check_out = true
 
     if @visit.valid?
       @visit.save
-      redirect_to("/visits", { :notice => "Visit updated successfully."} )
+      redirect_to("/", { :notice => "Visit updated successfully."} )
     else
-      redirect_to("/visits", { :alert => "Visit failed to update successfully." })
+      redirect_to("/", { :alert => "Visit failed to update successfully." })
     end
   end
 
@@ -64,6 +65,6 @@ class VisitsController < ApplicationController
 
     @visit.destroy
 
-    redirect_to("/visits", { :notice => "Visit deleted successfully."} )
+    redirect_to("/", { :notice => "Visit deleted successfully."} )
   end
 end

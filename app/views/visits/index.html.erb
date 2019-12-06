@@ -1,7 +1,7 @@
 <div class="row mb-3">
   <div class="col-md-12">
     <h1>
-      List of all visits
+      Check In Home Page
     </h1>
   </div>
 </div>
@@ -16,7 +16,7 @@
     <h2>
       Check Out from <%= Location.where({:id => @current_visit.location_id}).pluck(:name).at(0) %>
     </h2>
-    <a href="/visits/<%= @current_visit.id %>">
+    <a href="/check_out_visit">
         Check Out
     </a> 
 
@@ -39,9 +39,9 @@
         </label>
 
         <select name="purpose_from_query" id="purpose_box" class="form-control form-control-sm mr-sm-1" value="Choose a purpose...">
-        <option value="DO NOT BOTHER ME!!">Studying Alone and Only Studying</option>
-        <option value="Studying, but Down to Study Together">Studying, but Down to Study Together</option>
-        <option value="Kinda Studying but down to Procrastinate">Kinda Studying but down to Procrastinate</option>
+        <option value="DO NOT BOTHER ME!!">Need to work alone</option>
+        <option value="Studying, but Down to Study Together">Down to study silently together</option>
+        <option value="Kinda Studying but down to Procrastinate">Kinda studying but down to procrastinate</option>
         <option value="I need friends. Come hang out with me!">I need friends. Come hang out with me!</option></select>
       </div>
 

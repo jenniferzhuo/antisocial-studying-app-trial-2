@@ -3,6 +3,74 @@
 
 <hr>
 
+<% if Visit.where({:visitors_id => session[:user_id] , :check_out => false}).count == 0 %>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h2>
+      <%= User.where({:id => session[:user_id]}).pluck(:username).at(0).capitalize  %> is not currently checked in at any location.
+    </h2>
+    <h3>
+      To check in to a location, please click <a href="/visits">
+            here
+          </a>
+    </h3>
+
+  </div>
+</div>
+<% else %>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h2>
+      Currently Checked In at <%= Visit.where({:visitors_id => session[:user_id] , :check_out => false}).at(0) %>
+    </h2>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+
+        <th>
+          Purpose
+        </th>
+
+        <th>
+          Location
+        </th>
+
+        <th>
+          Check In
+        </th>
+
+      </tr>
+
+      <% Visit.where({:visitors_id => @current_user.id, :check_out => false }).each do |visit| %>
+      <tr>
+        <td>
+          <%= visit.purpose %>
+        </td>
+
+        <td>
+          <% place_number = visit.location_id %>
+          <%= Location.where({:id => place_number}).pluck(:name).at(0) %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(visit.created_at) %> ago
+        </td>
+
+        <td>
+          <a href="/visits/<%= visit.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+<% end %>
+
 <hr>
 <div class="row mb-3">
   <div class="col-md-12">
@@ -29,7 +97,7 @@
         </th>
 
         <th>
-          Check Out
+          Checked Out
         </th>
 
         <th>
@@ -51,7 +119,11 @@
           <%= time_ago_in_words(visit.created_at) %> ago
         </td>
         <td>
-          <%= time_ago_in_words(visit.updated_at) %> ago
+          <% if visit.check_out == false %>
+            I'm still here.
+          <% else %>
+            I'm no longer here.
+          <% end %>
         </td>
 
         <td>
