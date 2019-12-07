@@ -2,7 +2,26 @@ class FollowRequestsController < ApplicationController
   def index
     @follow_requests = FollowRequest.all.order({ :created_at => :desc })
 
-    render({ :template => "follow_requests/index.html.erb" })
+    render({ :template => "follow_requests/sent_follow_requests.html.erb" })
+  end
+
+  def accept_friend_request
+    the_id = params.fetch("id_from_path")
+    @follow_request = FollowRequest.where({ :id => the_id }).at(0)
+    @follow_request.accepted_request = true
+
+    if @follow_request.valid?
+      @follow_request.save
+      redirect_to("/all_users", { :notice => "Follow request accepted." })
+    else
+      redirect_to("/all_users", { :notice => "Follow request failed to accept successfully." })
+    end
+  end
+
+  def index_accepted_requests
+    @follow_requests = FollowRequest.all.order({ :created_at => :desc })
+
+    render({ :template => "users/close_friends.html.erb" })
   end
 
   def show
@@ -14,15 +33,15 @@ class FollowRequestsController < ApplicationController
 
   def create
     @follow_request = FollowRequest.new
-    @follow_request.sender_id = params.fetch("sender_id_from_query")
+    @follow_request.sender_id = session[:user_id]
     @follow_request.recipent_id = params.fetch("recipent_id_from_query")
-    @follow_request.accepted = params.fetch("accepted_from_query", false)
+    @follow_request.accepted_request = params.fetch("accepted_from_query", false)
 
     if @follow_request.valid?
       @follow_request.save
-      redirect_to("/follow_requests", { :notice => "Follow request created successfully." })
+      redirect_to("/all_users", { :notice => "Follow request sent. Response pending" })
     else
-      redirect_to("/follow_requests", { :notice => "Follow request failed to create successfully." })
+      redirect_to("/all_users", { :notice => "Follow request failed to create successfully." })
     end
   end
 
@@ -32,7 +51,7 @@ class FollowRequestsController < ApplicationController
 
     @follow_request.sender_id = params.fetch("sender_id_from_query")
     @follow_request.recipent_id = params.fetch("recipent_id_from_query")
-    @follow_request.accepted = params.fetch("accepted_from_query", false)
+    @follow_request.accepted_request = params.fetch("accepted_from_query", false)
 
     if @follow_request.valid?
       @follow_request.save
@@ -48,6 +67,6 @@ class FollowRequestsController < ApplicationController
 
     @follow_request.destroy
 
-    redirect_to("/follow_requests", { :notice => "Follow request deleted successfully."} )
+    redirect_to("/all_users", { :notice => "Follow request deleted successfully."} )
   end
 end

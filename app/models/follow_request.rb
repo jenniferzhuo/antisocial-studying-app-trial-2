@@ -11,4 +11,6 @@
 #
 
 class FollowRequest < ApplicationRecord
+
+
 end

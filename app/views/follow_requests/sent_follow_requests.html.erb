@@ -1,0 +1,132 @@
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      List of sent follow requests
+    </h1>
+  </div>
+</div>
+
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <% if @follow_requests.where({:sender_id => session[:user_id]}).present?%>
+    <table class="table">
+      <tr>
+
+        <th>
+          Recipent
+        </th>
+
+        <th>
+          Accepted
+        </th>
+
+        <th>
+          Sent at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+      
+      <% @follow_requests.where({:sender_id => session[:user_id]}).each do |follow_request| %>
+      <tr>
+
+        <td>
+          <%=  User.where({:id => follow_request.recipent_id}).pluck(:username).at(0).to_s.capitalize %>
+        </td>
+
+        <td>
+          <% if follow_request.accepted_request == false %>
+            Still pending
+          <% else %>
+            Accepted!
+          <% end %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(follow_request.created_at) %> ago
+        </td>
+
+        <td>
+          <a href="/delete_follow_request/<%= follow_request.id %>">
+            Delete Request
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+    <% else %>
+      <h3> No pending friend requests </h3>
+    <% end %> 
+  </div>
+</div>
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      List of received follow requests
+    </h1>
+  </div>
+</div>
+
+
+<hr>
+<div class="row mb-3">
+  <div class="col-md-12">
+  <% if @follow_requests.where({:recipent_id => session[:user_id]}).present?%>
+    <table class="table">
+      <tr>
+
+        <th>
+          Sender
+        </th>
+
+        <th>
+          Accepted?
+        </th>
+
+        <th>
+          Sent at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @follow_requests.where({:recipent_id => session[:user_id]}).each do |follow_request| %>
+      <tr>
+
+        <td>
+          <%= User.where({:id => follow_request.sender_id}).pluck(:username).at(0).capitalize %>
+        </td>
+
+        <td>
+          <% if follow_request.accepted_request == false %>
+            Still pending
+          <% else %>
+            Accepted!
+          <% end %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(follow_request.created_at) %> ago
+        </td>
+
+        <td>
+          <a href="/accept_follow_request/<%= follow_request.id %>">
+            Accept Friend Request
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+    <% else %>
+      <h3> No pending friend requests </h3>
+    <% end %> 
+  </div>
+</div>

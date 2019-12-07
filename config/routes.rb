@@ -6,13 +6,17 @@ Rails.application.routes.draw do
   match("/insert_follow_request", { :controller => "follow_requests", :action => "create", :via => "post"})
           
   # READ
-  match("/follow_requests", { :controller => "follow_requests", :action => "index", :via => "get"})
+  match("/sent_follow_requests", { :controller => "follow_requests", :action => "index", :via => "get"})
   
   match("/follow_requests/:id_from_path", { :controller => "follow_requests", :action => "show", :via => "get"})
+
+  match("/close_friends", { :controller => "follow_requests", :action => "index_accepted_requests", :via => "get"})
   
   # UPDATE
   
   match("/modify_follow_request/:id_from_path", { :controller => "follow_requests", :action => "update", :via => "post"})
+
+  match("/accept_follow_request/", { :controller => "follow_requests", :action => "accept_friend_request", :via => "post"})
   
   # DELETE
   match("/delete_follow_request/:id_from_path", { :controller => "follow_requests", :action => "destroy", :via => "get"})

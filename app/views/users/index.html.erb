@@ -22,19 +22,27 @@
         </th>
       </tr>
 
-      <% @users.except({:id => session[:user_id]}).each do |people| %>
+      
+      <% @users.where.not({:id => session[:user_id]}).each do |people| %>
       <tr>
         <td>
           <%= people.username.capitalize %>
         </td>
 
         <td>
-          <% if people.id == 0 %>
-           <a href="/user/<%= people.id %>">
-            Add Friend
-            </a>
+          <% if FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).count == 0 %>
+    
+            <form action="/insert_follow_request" method="post">
+              <div class="form-group">
+                <input type="hidden" name="recipent_id_from_query" class="form-control" value="<%= people.id %>">
+              </div>
+              <button class="btn btn-block btn-outline-secondary">
+                Add Friend
+              </button>
+            </form>
+
           <% else %>
-            <a href="/user/<%= people.id %>">
+            <a href="/delete_follow_request/<%= FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).at(0) %>">
             Remove Friend
             </a>
           <% end %>

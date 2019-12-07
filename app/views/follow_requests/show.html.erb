@@ -37,7 +37,7 @@
         Accepted
       </dt>
       <dd>
-        <%= @follow_request.accepted %>
+        <%= @follow_request.accepted_request %>
       </dd>
 
       <dt>
@@ -84,7 +84,7 @@
       </div>
 
       <div class="custom-control custom-checkbox mb-3">
-        <input type="checkbox" class="custom-control-input" id="accepted_box" name="accepted_from_query" value="1" <%= "checked" if @follow_request.accepted %>>
+        <input type="checkbox" class="custom-control-input" id="accepted_box" name="accepted_from_query" value="1" <%= "checked" if @follow_request.accepted_request %>>
 
         <label class="custom-control-label"
           for="accepted_box">Accepted</label>
