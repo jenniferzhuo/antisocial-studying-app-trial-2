@@ -11,4 +11,7 @@
 #
 
 class Location < ApplicationRecord
+  validates :address, :presence => true
+  validates :name, :presence => true
+  validates :name, :uniqueness => { :case_sensitive => false }
 end

@@ -35,7 +35,7 @@
       <tr>
 
         <td>
-          <%=  User.where({:id => follow_request.recipent_id}).pluck(:username).at(0).to_s.capitalize %>
+          <%=  User.where({:id => follow_request.recipent_id}).pluck(:username).at(0).capitalize %>
         </td>
 
         <td>
@@ -94,6 +94,9 @@
 
         <th>
         </th>
+
+        <th>
+        </th>
       </tr>
 
       <% @follow_requests.where({:recipent_id => session[:user_id]}).each do |follow_request| %>
@@ -116,6 +119,12 @@
         <td>
           <a href="/accept_follow_request/<%= follow_request.id %>">
             Accept Friend Request
+          </a>
+        </td>
+
+        <td>
+          <a href="/delete_follow_request/<%= follow_request.id %>">
+            Delete Friend Request
           </a>
         </td>
       </tr>

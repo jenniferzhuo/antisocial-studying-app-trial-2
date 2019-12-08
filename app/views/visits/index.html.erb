@@ -39,8 +39,8 @@
         </label>
 
         <select name="purpose_from_query" id="purpose_box" class="form-control form-control-sm mr-sm-1" value="Choose a purpose...">
-        <option value="DO NOT BOTHER ME!!">Need to work alone</option>
-        <option value="Studying, but Down to Study Together">Down to study silently together</option>
+        <option value="DO NOT BOTHER ME!!">DO NOT BOTHER ME!!</option>
+        <option value="Down to study silently together">Down to study silently together</option>
         <option value="Kinda Studying but down to Procrastinate">Kinda studying but down to procrastinate</option>
         <option value="I need friends. Come hang out with me!">I need friends. Come hang out with me!</option></select>
       </div>
@@ -68,6 +68,45 @@
   </div>
 </div>
 <%end %>
+
+<h2> Most Popular Locations </h2>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+
+        <th>
+          Location
+        </th>
+
+        <th>
+          Number of People
+        </th>
+
+      </tr>
+
+      <% a = @visits.where({:check_out => false}).pluck(:location_id).sort %>
+      <% b = a.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
+      <% c = b.to_a.each {|location_id,count| puts "#{count}: #{location_id}" } %>
+
+      <% c.each do |visit| %>
+      <tr>
+
+        <td>
+          <%= Location.where({:id => visit[0]}).pluck(:name).at(0) %>
+        </td>
+
+        <td>
+
+          <%= visit[1] %>
+        </td>
+      
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
 
 
 
@@ -100,8 +139,6 @@
           Checked Out
         </th>
 
-        <th>
-        </th>
       </tr>
 
       <% @visits.where({:check_out => false}).each do |visit| %>
@@ -112,8 +149,12 @@
         </td>
 
         <td>
+          <% if FollowRequest.where({:recipent_id => session[:user_id], :sender_id => visit.visitors_id, :accepted_request => true}).present? || FollowRequest.where({:sender_id => session[:user_id], :recipent_id => visit.visitors_id, :accepted_request => true}).present? %>
           <% username = User.where({:id => visit.visitors_id}).pluck(:username).at(0) %>
           <%= username.to_s.capitalize %>
+          <% else %>
+            Private
+          <% end %>
         </td>
 
         <td>
@@ -131,11 +172,7 @@
           <% end %>
         </td>
 
-        <td>
-          <a href="/visits/<%= visit.id %>">
-            Show details
-          </a>
-        </td>
+        
       </tr>
       <% end %>
     </table>

@@ -36,7 +36,10 @@
           Category
         </label>
 
-        <input type="text" id="category_box" name="category_from_query" class="form-control">
+        <select name="category_from_query" id="category_box" class="form-control form-control-sm mr-sm-1" value="Choose a purpose...">
+        <option value="Cafe">Cafe</option>
+        <option value="Library">Library</option>
+        <option value="Other">Other</option></select>
       </div>
 
       <button class="btn btn-block btn-outline-secondary">
@@ -51,9 +54,6 @@
   <div class="col-md-12">
     <table class="table">
       <tr>
-        <th>
-          ID
-        </th>
 
         <th>
           Name
@@ -68,22 +68,11 @@
         </th>
 
         <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
         </th>
       </tr>
 
-      <% @locations.each do |location| %>
+      <% Location.all.order({ :name => :asc }).each do |location| %>
       <tr>
-        <td>
-          <%= location.id %>
-        </td>
 
         <td>
           <%= location.name %>
@@ -95,13 +84,6 @@
 
         <td>
           <%= location.category %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(location.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(location.updated_at) %> ago
         </td>
 
         <td>

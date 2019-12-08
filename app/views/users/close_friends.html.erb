@@ -1,7 +1,7 @@
 <h1>Where are your friends?</h1>
 
 
-<% if FollowRequest.where({:accepted_request => true, :sender_id => session[:user_id]}).empty? == false && FollowRequest.where({:accepted_request => true, :recipent_id => session[:user_id]}).empty? == false%>
+<% if FollowRequest.where({:accepted_request => true, :sender_id => session[:user_id]}).present? == false && FollowRequest.where({:accepted_request => true, :recipent_id => session[:user_id]}).present? == false%>
 <div class="row mb-3">
   <div class="col-md-12">
     <h5>
