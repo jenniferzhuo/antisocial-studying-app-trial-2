@@ -42,6 +42,8 @@
           Check In
         </th>
 
+        <th>
+        </th>
       </tr>
 
       <% Visit.where({:visitors_id => @current_user.id, :check_out => false }).each do |visit| %>

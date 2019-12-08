@@ -5,19 +5,6 @@ class FollowRequestsController < ApplicationController
     render({ :template => "follow_requests/sent_follow_requests.html.erb" })
   end
 
-  def accept_friend_request
-    the_id = params.fetch("id_from_path")
-    @follow_request = FollowRequest.where({ :id => the_id }).at(0)
-    @follow_request.accepted_request = true
-
-    if @follow_request.valid?
-      @follow_request.save
-      redirect_to("/all_users", { :notice => "Follow request accepted." })
-    else
-      redirect_to("/all_users", { :notice => "Follow request failed to accept successfully." })
-    end
-  end
-
   def index_accepted_requests
     @follow_requests = FollowRequest.all.order({ :created_at => :desc })
 
@@ -42,6 +29,19 @@ class FollowRequestsController < ApplicationController
       redirect_to("/all_users", { :notice => "Follow request sent. Response pending" })
     else
       redirect_to("/all_users", { :notice => "Follow request failed to create successfully." })
+    end
+  end
+
+  def accept_friend_request
+    the_id = params.fetch("id_from_path")
+    @follow_request = FollowRequest.where({ :id => the_id }).at(0)
+    @follow_request.accepted_request = true
+
+    if @follow_request.valid?
+      @follow_request.save
+      redirect_to("/all_users", { :notice => "Follow request accepted." })
+    else
+      redirect_to("/all_users", { :notice => "Follow request failed to accept successfully." })
     end
   end
 

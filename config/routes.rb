@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   
   match("/modify_follow_request/:id_from_path", { :controller => "follow_requests", :action => "update", :via => "post"})
 
-  match("/accept_follow_request/", { :controller => "follow_requests", :action => "accept_friend_request", :via => "post"})
+  match("/accept_follow_request/:id_from_path", { :controller => "follow_requests", :action => "accept_friend_request", :via => "get"})
   
   # DELETE
   match("/delete_follow_request/:id_from_path", { :controller => "follow_requests", :action => "destroy", :via => "get"})

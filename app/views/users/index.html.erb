@@ -36,16 +36,22 @@
               <div class="form-group">
                 <input type="hidden" name="recipent_id_from_query" class="form-control" value="<%= people.id %>">
               </div>
-              <button class="btn btn-block btn-outline-secondary">
+              <button class="btn btn-block btn-outline-primary">
                 Add Friend
               </button>
             </form>
 
           <% else %>
-            <a href="/delete_follow_request/<%= FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).at(0) %>">
-            Remove Friend
-            </a>
-          <% end %>
+            <form action="/delete_follow_request/<%= people.id %>" method="post">
+              <div class="form-group">
+                <input type="hidden" name="recipent_id_from_query" class="form-control" value="<%= people.id %>">
+              </div>
+              <button class="btn btn-block btn-outline-secondary">
+                Unfriend
+              </button>
+            </form>
+            <% end %>
+        
         </td>
 
         

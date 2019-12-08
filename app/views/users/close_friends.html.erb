@@ -1,10 +1,16 @@
-<h1>Friends!</h1>
-  
+<h1>Where are your friends?</h1>
+
+
+<% if FollowRequest.where({:accepted_request => true, :sender_id => session[:user_id]}).empty? == false && FollowRequest.where({:accepted_request => true, :recipent_id => session[:user_id]}).empty? == false%>
+<div class="row mb-3">
   <div class="col-md-12">
-    <h2>
-      List of Friends
-    </h2>
+    <h5>
+      You are not currently connected with any friends.
+    </h5>
   </div>
+</div>
+<% elsif Visit.where({:visitors_id => FollowRequest.where({:sender_id => session[:user_id], :accepted_request => true}).pluck(:recipent_id) }).empty? == false || Visit.where({:visitors_id => FollowRequest.where({:recipent_id => session[:user_id], :accepted_request => true}).pluck(:sender_id) }).empty? == false %>
+
   <div class="row mb-3">
   <div class="col-md-12">
     <table class="table">
@@ -15,104 +21,52 @@
         </th>
 
         <th>
-          Unfriend
+          Location
+        </th>
+        
+        <th>
+          Checked In at
         </th>
       </tr>
 
-      
-      <% FollowRequest.where({:sender_id => session[:user_id] }).pluck(:recipent_id).each do |people| %> or :recipent_id => session[:user_id]
+      <% Visit.where({:visitors_id => FollowRequest.where({:sender_id => session[:user_id], :accepted_request => true}).pluck(:recipent_id) }).each do |people| %> 
       <tr>
         <td>
-          <%= people.username.capitalize %>
+          <%= User.where({:id => people.visitors_id}).pluck(:username).at(0).capitalize %>
         </td>
 
         <td>
-          <% if FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).count == 0 %>
-    
-            <form action="/insert_follow_request" method="post">
-              <div class="form-group">
-                <input type="hidden" name="recipent_id_from_query" class="form-control" value="<%= people.id %>">
-              </div>
-              <button class="btn btn-block btn-outline-secondary">
-                Add Friend
-              </button>
-            </form>
-
-          <% else %>
-            <a href="/delete_follow_request/<%= FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).at(0) %>">
-            Remove Friend
-            </a>
-          <% end %>
+          <%= Location.where({:id => people.location_id}).pluck(:name).at(0).capitalize %>
         </td>
 
+        <td>
+          <%= time_ago_in_words(people.created_at) %> ago
+        </td>
+      </tr>
+      <% end %>
+
+        <% Visit.where({:visitors_id => FollowRequest.where({:recipent_id => session[:user_id], :accepted_request => true}).pluck(:sender_id) }).each do |people| %> 
+      <tr>
+        <td>
+          <%= User.where({:id => people.visitors_id}).pluck(:username).at(0).capitalize %>
+        </td>
+
+        <td>
+          <%= Location.where({:id => people.location_id}).pluck(:name).at(0).capitalize %>
+        </td>
+        
+        <td>
+          <%= time_ago_in_words(people.created_at) %> ago
+        </td>
         
       </tr>
       <% end %>
-    
+    <% else %>
+      <div class="col-md-12">
+        <h5>
+          No one is checked in
+        </h5>
+      </div>
+    <% end %>
   </div>
 </div>
-
-<% FollowRequest.where({:sender_id => session[:user_id] }).pluck(:recipent_id).each do |people| %> or :recipent_id => session[:user_id]
-      <tr>
-        <td>
-          <%= people.username.capitalize %>
-        </td>
-
-        <td>
-          <% if FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).count == 0 %>
-    
-            <form action="/insert_follow_request" method="post">
-              <div class="form-group">
-                <input type="hidden" name="recipent_id_from_query" class="form-control" value="<%= people.id %>">
-              </div>
-              <button class="btn btn-block btn-outline-secondary">
-                Add Friend
-              </button>
-            </form>
-
-          <% else %>
-            <a href="/delete_follow_request/<%= FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).at(0) %>">
-            Remove Friend
-            </a>
-          <% end %>
-        </td>
-
-        
-      </tr>
-      <% end %>
-    </table>
-  </div>
-</div>
-
-
-
-  <div class="col-md-12">
-    <h2> 
-      Where are your friends?
-    </h2>
-  </div>
-<hr>
-<% if FollowRequest.where({:accepted_request => false, :sender_id => session[:user_id]}) %>
-<div class="row mb-3">
-  <div class="col-md-12">
-    <h2>
-      You are not currently connected with any friends.
-    </h2>
-  </div>
-</div>
-<% elsif FollowRequest.where({:accepted_request => true}) %>
-  <div class="col-md-12">
-    <h2>
-      No one is checked in
-    </h2>
-  </div>
-<% else %>
-  <div class="col-md-12">
-    <h2>
-      Where is your friend?
-    </h2>
-  </div>
-<% end %>
-
-<hr>
-
