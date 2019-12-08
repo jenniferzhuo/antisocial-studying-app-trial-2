@@ -152,6 +152,8 @@
           <% if FollowRequest.where({:recipent_id => session[:user_id], :sender_id => visit.visitors_id, :accepted_request => true}).present? || FollowRequest.where({:sender_id => session[:user_id], :recipent_id => visit.visitors_id, :accepted_request => true}).present? %>
           <% username = User.where({:id => visit.visitors_id}).pluck(:username).at(0) %>
           <%= username.to_s.capitalize %>
+          <% elsif session[:user_id] == visit.visitors_id %>
+          You
           <% else %>
             Private
           <% end %>

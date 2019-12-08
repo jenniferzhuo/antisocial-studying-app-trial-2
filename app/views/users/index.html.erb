@@ -30,7 +30,7 @@
         </td>
 
         <td>
-          <% if FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).count == 0 %>
+          <% if FollowRequest.where({:sender_id => session[:user_id], :recipent_id => people.id}).pluck(:id).count != 0 || FollowRequest.where({:recipent_id => session[:user_id], :sender_id => people.id}).pluck(:id).count != 0%>
     
             <form action="/insert_follow_request" method="post">
               <div class="form-group">

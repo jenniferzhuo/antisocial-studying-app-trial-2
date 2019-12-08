@@ -99,7 +99,7 @@
         </th>
       </tr>
 
-      <% @follow_requests.where({:recipent_id => session[:user_id]}).each do |follow_request| %>
+      <% @follow_requests.where({:recipent_id => session[:user_id], :accepted_request => false}).each do |follow_request| %>
       <tr>
 
         <td>
